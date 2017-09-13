@@ -63,8 +63,8 @@ internal class BarDrawingLayer: ScrollableGraphViewDrawingLayer {
                 location = pointLocation
             }
             
-            let pointPath = createBarPath(centre: location)
-            barPath.append(pointPath)
+            let pointPath = createBarPath(location)
+            barPath.appendPath(pointPath)
         }
         
         return barPath

@@ -107,7 +107,7 @@ import UIKit
     private var previousActivePointsInterval: Range<Int> = -1 ..< -1
     private var activePointsInterval: Range<Int> = -1 ..< -1 {
         didSet {
-            if(oldValue.lowerBound != activePointsInterval.lowerBound || oldValue.upperBound != activePointsInterval.upperBound) {
+            if(oldValue.startIndex != activePointsInterval.startIndex || oldValue.endIndex != activePointsInterval.endIndex) {
                 if !isCurrentlySettingUp { activePointsDidChange() }
             }
         }
@@ -428,18 +428,18 @@ import UIKit
     // MARK: - Public Methods
     // ######################
     
-    public func addPlot(plot: Plot) {
+    func addPlot(plot: Plot) {
         // If we aren't setup yet, save the plot to be added during setup.
         if(isInitialSetup) {
             enqueuePlot(plot)
         }
         // Otherwise, just add the plot directly.
         else {
-            addPlotToGraph(plot: plot, activePointsInterval: self.activePointsInterval)
+            addPlotToGraph(plot, activePointsInterval: self.activePointsInterval)
         }
     }
     
-    public func addReferenceLines(referenceLines: ReferenceLines) {
+    func addReferenceLines(referenceLines: ReferenceLines) {
         
         // If we aren't setup yet, just save the reference lines and the setup will take care of it.
         if(isInitialSetup) {
@@ -452,7 +452,7 @@ import UIKit
     }
     
     // Limitation: Can only be used when reloading the same number of data points!
-    public func reload() {
+    func reload() {
         stopAnimations()
         rangeDidChange()
         updateUI()
@@ -588,13 +588,12 @@ import UIKit
         }
         else {
             
-            let range = calculateRange(for: dataForActivePoints)
+            let range = calculateRange(dataForActivePoints)
             return clean(range)
         }
     }
     
-    
-    private func calculateRange<T: Collection>(for data: T) -> (min: Double, max: Double) where T.Iterator.Element == Double {
+    private func calculateRange<T: CollectionType where T.Generator.Element == Double>(data: T) -> (min: Double, max: Double) {
         
         var rangeMin: Double = Double(Int.max)
         var rangeMax: Double = Double(Int.min)
@@ -610,6 +609,23 @@ import UIKit
         }
         return (min: rangeMin, max: rangeMax)
     }
+    
+//    private func calculateRange<T: Collection>(for data: T) -> (min: Double, max: Double) where T.Iterator.Element == Double {
+//        
+//        var rangeMin: Double = Double(Int.max)
+//        var rangeMax: Double = Double(Int.min)
+//        
+//        for dataPoint in data {
+//            if (dataPoint > rangeMax) {
+//                rangeMax = dataPoint
+//            }
+//            
+//            if (dataPoint < rangeMin) {
+//                rangeMin = dataPoint
+//            }
+//        }
+//        return (min: rangeMin, max: rangeMax)
+//    }
     
     private func clean(range: (min: Double, max: Double)) -> (min: Double, max: Double){
         if(range.min == range.max) {

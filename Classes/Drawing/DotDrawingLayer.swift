@@ -46,8 +46,8 @@ internal class DotDrawingLayer: ScrollableGraphViewDrawingLayer {
                 location = pointLocation
             }
             
-            let pointPath = pointPathCreator(location)
-            dataPointPath.append(pointPath)
+            let pointPath = pointPathCreator(centre: location)
+            dataPointPath.appendPath(pointPath)
         }
         
         return dataPointPath

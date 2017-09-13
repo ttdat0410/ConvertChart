@@ -82,8 +82,8 @@ internal class LineDrawingLayer : ScrollableGraphViewDrawingLayer {
             let startPoint = owner.graphPoint(forIndex: i).location
             let endPoint = owner.graphPoint(forIndex: i+1).location
             
-            pathSegmentAdder(startPoint, endPoint, currentLinePath)
-            pathSegmentAdder(
+//            pathSegmentAdder(startPoint, endPoint: endPoint, inPath: currentLinePath)
+            pathSegmentAdder(startPoint, endPoint: endPoint, inPath: currentLinePath)
         }
         
         // Connect the line to the ending edge if we are filling it.
@@ -95,9 +95,9 @@ internal class LineDrawingLayer : ScrollableGraphViewDrawingLayer {
             let rightFarEdgeTop = CGPoint(x: lastDataPoint.x + (pointPadding.rightmostPointPadding + viewportWidth), y: zeroYPosition)
             let rightFarEdgeBottom = CGPoint(x: lastDataPoint.x + (pointPadding.rightmostPointPadding + viewportWidth), y: viewportHeight)
             
-            pathSegmentAdder(lastDataPoint, viewportRightZero, currentLinePath)
-            pathSegmentAdder(viewportRightZero, rightFarEdgeTop, currentLinePath)
-            pathSegmentAdder(rightFarEdgeTop, rightFarEdgeBottom, currentLinePath)
+            pathSegmentAdder(lastDataPoint, endPoint: viewportRightZero, inPath: currentLinePath)
+            pathSegmentAdder(viewportRightZero, endPoint: rightFarEdgeTop, inPath: currentLinePath)
+            pathSegmentAdder(rightFarEdgeTop, endPoint: rightFarEdgeBottom, inPath: currentLinePath)
         }
         
         return currentLinePath

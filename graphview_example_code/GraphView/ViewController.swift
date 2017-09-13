@@ -662,7 +662,7 @@ class ViewController: UIViewController, ScrollableGraphViewDataSource {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        true
+        return true
     }
 }
 
